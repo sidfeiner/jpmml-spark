@@ -23,10 +23,7 @@ import java.io.File;
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.ml.Transformer;
-import org.apache.spark.sql.DataFrame;
-import org.apache.spark.sql.DataFrameReader;
-import org.apache.spark.sql.DataFrameWriter;
-import org.apache.spark.sql.SQLContext;
+import org.apache.spark.sql.*;
 import org.jpmml.evaluator.Evaluator;
 
 public class EvaluationExample {
@@ -59,7 +56,7 @@ public class EvaluationExample {
 				.option("header", "true")
 				.option("inferSchema", "true");
 
-			DataFrame dataFrame = reader.load(args[1]);
+			Dataset<Row> dataFrame = reader.load(args[1]);
 
 			dataFrame = transformer.transform(dataFrame);
 
