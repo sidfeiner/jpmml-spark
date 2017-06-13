@@ -32,6 +32,8 @@ import org.apache.spark.sql.Column;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.RowFactory;
+import org.apache.spark.sql.catalyst.expressions.CreateArray;
+import org.apache.spark.sql.catalyst.expressions.CreateStruct;
 import org.apache.spark.sql.catalyst.expressions.Expression;
 import org.apache.spark.sql.catalyst.expressions.ScalaUDF;
 import org.apache.spark.sql.types.DataType;
@@ -150,7 +152,7 @@ public class PMMLTransformer extends Transformer {
 		Expression evaluateExpression = new ScalaUDF(
 				evaluatorFunction,
 				getOutputSchema(),
-				ScalaUtil.toSeq(activeExpressions),
+				ScalaUtil.<Expression>singletonSeq(new CreateArray(ScalaUtil.<Expression>toSeq(activeExpressions))),
 				ScalaUtil.<DataType>emptySeq()
 		);
 
