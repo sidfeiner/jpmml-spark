@@ -32,10 +32,7 @@ import org.apache.spark.sql.Column;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.RowFactory;
-import org.apache.spark.sql.catalyst.expressions.CreateArray;
-import org.apache.spark.sql.catalyst.expressions.CreateStruct;
-import org.apache.spark.sql.catalyst.expressions.Expression;
-import org.apache.spark.sql.catalyst.expressions.ScalaUDF;
+import org.apache.spark.sql.catalyst.expressions.*;
 import org.apache.spark.sql.types.DataType;
 import org.apache.spark.sql.types.DataTypes;
 import org.apache.spark.sql.types.StructField;
@@ -46,6 +43,7 @@ import org.jpmml.evaluator.FieldValue;
 import org.jpmml.evaluator.InputField;
 import org.jpmml.evaluator.ResultField;
 import scala.Function1;
+import scala.collection.Seq;
 import scala.runtime.AbstractFunction1;
 
 public class PMMLTransformer extends Transformer {
@@ -152,7 +150,7 @@ public class PMMLTransformer extends Transformer {
 		Expression evaluateExpression = new ScalaUDF(
 				evaluatorFunction,
 				getOutputSchema(),
-				ScalaUtil.<Expression>singletonSeq(new CreateArray(ScalaUtil.<Expression>toSeq(activeExpressions))),
+				ScalaUtil.<Expression>singletonSeq(CreateStruct.apply(ScalaUtil.<Expression>toSeq(activeExpressions))),
 				ScalaUtil.<DataType>emptySeq()
 		);
 

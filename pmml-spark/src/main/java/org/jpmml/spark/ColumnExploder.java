@@ -67,7 +67,7 @@ public class ColumnExploder extends Transformer {
 
 		Column structColumn = dataset.apply(getStructCol());
 
-		Dataset<Row> result = dataset.toDF();
+		Dataset<?> result = dataset;
 
 		StructField[] fields = structSchema.fields();
 		for(StructField field : fields){
@@ -78,7 +78,7 @@ public class ColumnExploder extends Transformer {
 			result = result.withColumn(name, fieldColumn);
 		}
 
-		return result;
+		return result.toDF();
 	}
 
 	private StructType getStructSchema(StructType schema){
